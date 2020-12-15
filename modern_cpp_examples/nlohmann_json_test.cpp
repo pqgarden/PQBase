@@ -65,6 +65,32 @@ void from_json(const json& j, ComplexOne& c)
 	c._hashNameIndex = j.at("HashNameIndex").get<unordered_map<string, magic::Person>>();
 }
 
+
+
+enum class category { order, cash_carry };
+struct Product {
+public:
+	Product() : id(), price(), name(), cat() {}
+	std::string id;
+	double price;
+	std::string name;
+	category cat;
+};
+
+NLOHMANN_JSON_SERIALIZE_ENUM(category, { {category::order, "order"}, {category::cash_carry, "cc"} })
+inline void to_json(nlohmann::json& j, const Product& p) {
+	j = nlohmann::json{ {"id", p.id},
+			   {"price", p.price},
+			   {"name", p.name},
+			   {"category", p.cat} };
+}
+inline void from_json(const nlohmann::json& j, Product& p) {
+	j.at("name").get_to(p.name);
+	j.at("id").get_to(p.id);
+	j.at("price").get_to(p.price);
+	j.at("category").get_to(p.cat);
+}
+
 int main()
 {
 	json myjson;
@@ -156,6 +182,26 @@ int main()
 	rOne.AddStr("third");
 	rOne.AddPair("whose", {"Tom", 25});
 
+
+
+#if 0
+	Product p;
+	p.id = "0xff";
+	p.price = 22.4;
+	p.name = "Product 1";
+	p.cat = category::cash_carry;
+	
+	Json product;
+	product["products"] = p;
+	std::cout << product.dump() << std::setw(4) << std::endl;
+
+	Json j = Json::parse(R"({"products":{"category":"cc","id":"0xff","name":"Product 1","price":22.4}})");
+	Product p1 = j["products"].get<Product>();
+	std::cout << "id: " << p1.id << std::endl;
+	std::cout << "price: " << p1.price << std::endl;
+	std::cout << "name: " << p1.name << std::endl;
+#endif
+	
 	return 0;
 }
 
