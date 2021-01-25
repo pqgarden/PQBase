@@ -9,6 +9,16 @@ using json = nlohmann::json;
 
 using namespace std;
 
+
+/*
+I don’t know who is the king of kings.
+But I do know nlohmann::json is the data-structure of data-structures
+此数据结构一出，简直是惊天地泣鬼神，有如下的好处：
+现代风格，代码简洁；
+万能型数据结构（装载任何类型的数据，包括自定义数据）；
+蕴含OO思想，可以作为OO数据库使用；
+*/
+
 /*
 这里我们写了一个结构体Person，放到了命名空间magic里，
 然后在这个命名空间里定义了两个函数，json在执行转换时就调用这两个函数。
